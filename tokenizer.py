@@ -78,14 +78,17 @@ def infix_to_outfix(expr):
 
     postfix_expr = ""
 
+    expr = expr.replace(" ", "")
+
     for ele in expr:
         if ele.isalnum():
             postfix_expr += ele
         elif ele == ")":
-            while operator != "(":
+            while operators:
                 operator = operators.pop()
-                if not operator == "(":
-                    postfix_expr += operator
+                if operator == "(":
+                    break
+                postfix_expr += operator
         else:
             if not operators:
                 operators.append(ele)
@@ -96,16 +99,15 @@ def infix_to_outfix(expr):
             else:
                 while operators and precedences[ele] <= precedences[operators[-1]]:
                     operator = operators.pop()
-                    if not operator == "(":
-                        postfix_expr += operator
+                    postfix_expr += operator
                 operators.append(ele)
 
     for operator in reversed(operators):
-        print(operator)
         postfix_expr += operator
 
     return postfix_expr
 
 
 if __name__ == "__main__":
-    print(get_url_list("https://enine.dev"))
+    # print(get_url_list("https://enine.dev"))
+    print(infix_to_outfix("a +b + (c+-d)"))
